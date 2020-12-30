@@ -3,12 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <PackageId>Perustaja.Polyglot</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>Perustaja</Authors>
+    <Description>Extends the C# library via types and classes inspired by other languages.</Description>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Polyglot.Common\Polyglot.Common.csproj" />
-  </ItemGroup>
 
 </Project>

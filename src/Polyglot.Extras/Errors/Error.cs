@@ -1,4 +1,4 @@
-namespace Perustaja.Polyglot.Common.Errors
+namespace Perustaja.Polyglot.Extras.Errors
 {
     public class Error
     {
