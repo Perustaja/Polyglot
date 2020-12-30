@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <PackageId>Perustaja.Polyglot</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Perustaja</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Polyglot.Common\Polyglot.Common.csproj" />
+  </ItemGroup>
+
+</Project>
