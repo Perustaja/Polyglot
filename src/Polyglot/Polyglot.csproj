@@ -2,10 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Perustaja.Polyglot</PackageId>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
     <Authors>Perustaja</Authors>
-    <Description>Extends the C# library via types and classes inspired by other languages.</Description>
+    <Description>
+      Extends the C# library via types and classes inspired by other languages. 
+      Source: https://github.com/Perustaja/Polyglot
+    </Description>
   </PropertyGroup>
 
 </Project>
