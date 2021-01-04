@@ -6,7 +6,16 @@ namespace Perustaja.Polyglot.Option
     {
         public static Option<T> Some(T val) => new Choices.Some(val);
 
-        public static Option<T> None() => new Choices.None();
+        public static Option<T> None => new Choices.None();
+
+        /// <summary>
+        /// Maps the given Option to one of a new type by invoking the function argument.
+        /// </summary>
+        public Option<U> Map<U>(Func<T, U> func)
+            => Match(
+                s => Option<U>.Some(func(s)),
+                () => Option<U>.None
+            );
 
         public abstract bool IsSome();
 
@@ -25,7 +34,13 @@ namespace Perustaja.Polyglot.Option
         public abstract T UnwrapOr(T fallback);
 
         /// <summary>
-        /// Invokes someAction if type is Some, or noneAction if type is None.
+        /// Returns U based upon whether the function is Some or None.
+        /// </summary>
+        public abstract U Match<U>(Func<T, U> someFunc, Func<U> noneFunc);
+
+        /// <summary>
+        /// Invokes someAction if type is Some, or noneAction if type is None. This function returns void and is not for a functional approach,
+        /// but rather as a very simple substitute for a match block.
         /// </summary>
         public abstract void Match(Action<T> someAction, Action noneAction);
 
@@ -45,6 +60,8 @@ namespace Perustaja.Polyglot.Option
 
                 public override T UnwrapOr(T fallback) => _value;
 
+                public override U Match<U>(Func<T, U> someFunc, Func<U> noneFunc) => someFunc(_value);
+
                 public override void Match(Action<T> someAction, Action noneAction)
                     => someAction?.Invoke(_value);
 
@@ -60,6 +77,7 @@ namespace Perustaja.Polyglot.Option
                 public override T Unwrap() => throw new Exception("Attempted to unwrap None.");
 
                 public override T UnwrapOr(T fallback) => fallback;
+                public override U Match<U>(Func<T, U> someFunc, Func<U> noneFunc) => noneFunc();
 
                 public override void Match(Action<T> someAction, Action noneAction)
                     => noneAction?.Invoke();
