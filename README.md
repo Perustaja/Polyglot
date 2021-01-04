@@ -50,21 +50,19 @@ string r = o.Match<string>(
 The second version simply invokes a differing action based on whether the current is ```Some``` or ```None```. This can be used for I/O operations or when a side effect is desired. This is made to mimic
 the ```match``` block in Rust, but obviously has its downsides as you cannot handle many different values
 like in Rust. Avoid this unless you MUST have side-effects, if you want to return different values based on
-the underlying value, use ```Match<U>``` above.
+the underlying value, use ```Match<U>``` above. 
 ```
-var bystander = 10;
-var o = Option<int>.Some(10);
+var o = Option<string>.Some("10");
 o.Match(
-    s => bystander += s,
-    () => { }
+    s => Console.WriteLine(s),
+    () => someFile.WriteLine("Empty!")
 );
-// bystander : 20
+// Prints "10" to the console
 
-var bystander = 10;
-var o = Option<int>.None;
+var o = Option<string>.None;
 o.Match(
-    s => bystander += s,
-    () => { }
+    s => Console.WriteLine(s),
+    () => someFile.WriteLine("Empty!")
 );
-// bystander : 10
+// Prints "Empty!" to some file
 ```
