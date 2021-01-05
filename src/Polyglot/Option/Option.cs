@@ -16,6 +16,15 @@ namespace Perustaja.Polyglot.Option
                 s => Option<U>.Some(func(s)),
                 () => Option<U>.None
             );
+        
+        /// <summary>
+        /// Returns the underlying value after applying the function if Some. Returns None if None.
+        /// </summary>
+        public Option<T> AndThen(Func<T, Option<T>> func)
+            => Match(
+                s => func(s),
+                () => Option<T>.None
+            );
 
         public abstract bool IsSome();
 
