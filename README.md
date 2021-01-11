@@ -1,91 +1,80 @@
 # Perustaja.Polyglot
 Classes and Types that extend C#, designed to work similarly to constructs in other languages.
+
 # Option
 Inspired by Rust's ```Option``` monad which is very similar to ```Maybe``` in F# and Haskell. 
 The ```Option``` monad represents a discriminated union type of either ```Some``` or ```None```.
+
 #### Instantiation
 ```
 var something = Option<string>.Some("Hello");
 var nothing = Option<string>.None;
 ```
+
 #### Checking the underlying value
-Two functions are provided to see check if it is ```Some``` or ```None```. Using these can result in messy code but nonetheless is provided as it is in Rust.
+Two functions are provided to see check if it is ```Some``` or ```None```.
 ```
 var o = Option<string>.Some("Noniin");
 Console.WriteLine(o.IsSome()); // Prints true
 Console.WriteLine(o.IsNone()); // Prints false
 ```
-#### UnWrap - Returning the underlying value
-```Unwrap()``` returns the underlying value if the value is ```Some```, or throws an exception if it is ```None```. As in Rust, its use is discouraged 
-but it can come in handy.
-```
-var o = Option<int>.Some(10);
-o.Unwrap(); // Returns 10
 
-var o = Option<int>.None;
-o.Unwrap(); // Throws an exception!
-```
-Consider using ```UnwrapOr()``` which provides a default value 
-```
-var o Option<int>.None;
-o.UnwrapOr(10); // Returns 10, the default value
-```
-#### Map - Transforming the underlying type of the Option
-```Map<U>``` is a function for mapping an ```Option<T>``` to an ```Option<U>``` by invoking a passed function. Use this to get a possible option of a different type.
-```
-var o = Option<int>.Some(10);
-o.Map<string>(o => o.ToString()); // Returns Some<string> with underlying value "10"
+## Unwrapping - Returning the underlying value
 
-var o = Option<int>.None;
-o.Map<string>(o => o.ToString()); // Returns None<string>
+#### Unwrap : Option<T> -> T
+```Unwrap()``` returns the underlying value if the value is ```Some```, or throws an exception if it is ```None```.
+```
+int some = Option<int>.Some(10).Unwrap(); // Returns 10
+int none = Option<int>.None.Unwrap(); // Throws an exception!
 ```
 
-#### Match - Retrieving the underlying value
-Two functions are provided, one which returns a value and one which does not.
-```Match<U>``` invokes one of two functions that return U. Based on whether the current ```Option``` is
-```Some``` or ```None```, the associated function will be invoked and its value returned. Use this to
-safely finalize a value returned by the ```Option```.
+#### UnwrapOr : Option<T> -> T
+Provides a default value, if the default value is the result of a function call, it must be eagerly evaluted (the function must be invoked within the call to```UnwrapOr()```).
 ```
-int value = 10;
-var o = Option<int>.Some(value);
-string r = o.Match<string>(
-    s => s.ToString(),
-    () => String.Empty
-);
-// r : "10"
-
-var o = Option<int>.None;
-string r = o.Match<string>(
-    s => s.ToString(),
-    () => String.Empty
-);
-// r : ""
+int some = Option<int>.Some(5).UnwrapOr(10); // Returns 5, the underlying value
+int none = Option<int>.None.UnwrapOr(10); // Returns 10, the default value
 ```
 
-The second version simply invokes a differing Action based on whether the current is ```Some``` or ```None```. This can be used for I/O operations or when a side effect is desired. This is made to mimic
-the ```match``` block in Rust, but obviously has its downsides as you cannot handle many different values
-like in Rust. Avoid this unless you MUST have side-effects, if you want to return different values based on
-the underlying value, use ```Match<U>``` above. 
+#### UnwrapOrElse : Option<T> -> T
+Provides the underlying value or evaluates the default from a closure.
 ```
-var o = Option<string>.Some("10");
-o.Match(
-    s => Console.WriteLine(s),
-    () => someFile.WriteLine("Empty!")
-);
-// Prints "10" to the console
-
-var o = Option<string>.None;
-o.Match(
-    s => Console.WriteLine(s),
-    () => someFile.WriteLine("Empty!")
-);
-// Prints "Empty!" to some file
+int num = 10;
+int some = Option<int>.Some(5).UnwrapOrElse(() => num * 5); // Returns 5, the underlying value
+int none = Option<int>.None.UnwrapOrElse(() => num * 5); // Returns 50, the result of the default function
 ```
 
-#### AndThen - Combinator function
-```AndThen()``` allows chaining. Each function in the chain returns an ```Option<T>``` where ```T``` is the same type as the original. This allows custom functions
-which can make decisions on what kind of ```Option``` they want to return based on the current ```Option```. In other words, you can chain together potentially failing
-logic and go about your business with the end result.
+## Mapping - Performing transformations
+
+#### Map : Option<T> -> Option<U>
+```Map()``` is a function for mapping an ```Option<T>``` to an ```Option<U>``` by invoking a passed function. If the current is ```Some```, the function is invoked
+with the underlying value, returning a new ```Some``` of a different type. If it is ```None```, the result is still ```None```.
+```
+var someOpt = Option<int>.Some(10).Map(o => o.ToString()); // Returns Some with underlying value "10"
+var none = Option<int>.None.Map(o => o.ToString()); // Returns None
+```
+
+#### MapOr : Option<T> -> U
+Provides a fallback value to return in case the current is ```None```.
+```
+string some = Option<int>.Some(10).MapOr("Default", o => o.ToString()); // Returns "10"
+string none = Option<int>.None.MapOr("Default", o => o.ToString()); // Returns "Default"
+```
+
+#### MapOrElse : Option<T> -> U
+Provides a fallback function to lazily evaluate in a closure if the current is ```None```.
+```
+string greeting = "hello";
+string r = Option<int>.None.MapOrElse(
+    () => greeting.ToUpper, 
+    s => s.ToString()
+    );
+// r : "HELLO"
+```
+
+## Combinators
+
+#### AndThen : Option<T> -> Option<U>
+```AndThen()``` allows chaining. Each function in the chain returns an ```Option```, calling the passed function on its underlying value if ```Some```, or returning ```None``` if there isn't one.
 ```
 // Assume the following function exists
 private Option<int> SquareIfEven(int n)
@@ -103,5 +92,26 @@ public void SomeOtherScope()
     var r = o.AndThen(SquareIfEven).AndThen(SquareIfEven);
     r.Unwrap() // Throws an exception, Option is still None
 }
-If any combinator in the chain fails, the end result ends as None.
+```
+
+## Matching - Side-effects or I/O from an Option
+
+#### Match - Actions instead of Funcs
+This can be used for I/O operations or when a side effect is desired. This is made to mimic
+the ```match``` block in Rust, but obviously has its downsides as you cannot handle many different values
+like in Rust. 
+```
+var o = Option<string>.Some("10");
+o.Match(
+    s => Console.WriteLine(s),
+    () => someFile.WriteLine("Empty!")
+);
+// Prints "10" to the console
+
+var o = Option<string>.None;
+o.Match(
+    s => Console.WriteLine(s),
+    () => someFile.WriteLine("Empty!")
+);
+// Prints "Empty!" to some file
 ```

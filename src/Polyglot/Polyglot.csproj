@@ -4,12 +4,13 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Perustaja.Polyglot</PackageId>
-    <Version>0.1.2</Version>
+    <Version>0.1.3</Version>
     <Authors>Perustaja</Authors>
     <Description>
       Extends the C# library via types and classes inspired by other languages. 
-      Source: https://github.com/Perustaja/Polyglot
     </Description>
+    <RepositoryUrl>https://github.com/Perustaja/Polyglot</RepositoryUrl>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
   </PropertyGroup>
 
 </Project>
