@@ -2,7 +2,7 @@ using System;
 using Perustaja.Polyglot.Option;
 using Xunit;
 
-namespace Polyglot.Tests
+namespace Perustaja.Polyglot.OptionTests
 {
     public class Map
     {
