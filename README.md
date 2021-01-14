@@ -1,6 +1,12 @@
 # Perustaja.Polyglot
 Classes and Types that extend C#, designed to work similarly to constructs in other languages.
 
+Current implementations:
+```Option<T>``` - Based upon Rust.
+```Result<T, E>``` - based upon Rust.
+
+References:
+```Option<T>``` Is based upon code written by JohnAzariah's Maybe monad [here](https://gist.github.com/johnazariah/d95c03e2c56579c11272a647bab4bc38).
 # Option
 Inspired by Rust's ```Option``` monad which is very similar to ```Maybe``` in F# and Haskell. 
 The ```Option``` monad represents a discriminated union type of either ```Some``` or ```None```.
@@ -113,3 +119,19 @@ o.Match(
 );
 // Prints "Empty!" to some file
 ```
+
+# Result
+Represents either an ```Ok``` with underlying value ```T``` or ```Err``` with underlying value ```E```.
+## Instantiation
+```
+var ok = Result<int, string>.Ok(5);
+var err = Result<int, string>.Err("Error!");
+```
+
+## Checking the underlying value
+```
+```
+
+## Unwrapping - Returning the underlying value
+
+## Mapping - Performing transformations

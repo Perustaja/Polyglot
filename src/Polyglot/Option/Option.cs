@@ -138,7 +138,7 @@ namespace Perustaja.Polyglot.Option
         /// </summary>
         public abstract void Match(Action<T> someAction, Action noneAction);
 
-        #region OperatorsAndEquation
+        #region OperatorsAndEquationBase
         public bool Equals(Option<T> other) => Equals(other as object);
 
         public abstract bool Equals(object other, IEqualityComparer comparer);
@@ -175,7 +175,7 @@ namespace Perustaja.Polyglot.Option
 
                 public override void Match(Action<T> someAction, Action noneAction) => someAction?.Invoke(_value);
 
-                #region OperatorsAndEquation
+                #region OperatorsAndEquationSome
                 public override bool Equals(object obj)
                     => obj is Some s
                         ? Equals(_value, s._value)
@@ -216,7 +216,7 @@ namespace Perustaja.Polyglot.Option
                 public override void Match(Action<T> someAction, Action noneAction)
                     => noneAction?.Invoke();
 
-                #region OperatorsAndEquation
+                #region OperatorsAndEquationNone
                 public override bool Equals(object obj) => obj is None;
 
                 public override int GetHashCode() => "None".GetHashCode();

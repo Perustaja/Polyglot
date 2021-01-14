@@ -11,7 +11,7 @@ namespace Perustaja.Polyglot.OptionTests
             var other = Option<int>.Some(10);
             var original = Option<int>.None.Or(other);
 
-            Assert.Equal(Option<int>.Some(10), original);
+            Assert.StrictEqual(Option<int>.Some(10), original);
         }
 
         [Fact]
@@ -20,7 +20,7 @@ namespace Perustaja.Polyglot.OptionTests
             var other = Option<int>.Some(10);
             var original = Option<int>.Some(20).Or(other);
 
-            Assert.Equal(Option<int>.Some(20), original);
+            Assert.StrictEqual(Option<int>.Some(20), original);
         }
 
         [Fact]
@@ -29,7 +29,7 @@ namespace Perustaja.Polyglot.OptionTests
             var other = Option<int>.Some(10);
             var original = Option<int>.None.OrElse(() => other);
 
-            Assert.Equal(Option<int>.Some(10), original);
+            Assert.StrictEqual(Option<int>.Some(10), original);
         }
 
         [Fact]
@@ -38,7 +38,7 @@ namespace Perustaja.Polyglot.OptionTests
             var other = Option<int>.Some(10);
             var original = Option<int>.Some(20).OrElse(() => other);
 
-            Assert.Equal(Option<int>.Some(20), original);
+            Assert.StrictEqual(Option<int>.Some(20), original);
         }
     }
 }
