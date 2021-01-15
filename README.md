@@ -120,7 +120,7 @@ o.Match(
 // Prints "Empty!" to some file
 ```
 
-# Result
+# Result - TBD
 Represents either an ```Ok``` with underlying value ```T``` or ```Err``` with underlying value ```E```.
 ## Instantiation
 ```
