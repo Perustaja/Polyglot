@@ -1,4 +1,4 @@
-# Perustaja.Polyglot
+# Perustaja.Polyglot [![Build Status](https://travis-ci.com/Perustaja/Polyglot.svg?branch=main)](https://travis-ci.com/Perustaja/Polyglot)
 Classes and Types that extend C#, designed to work similarly to constructs in other languages. All features should be as close to the source implementation as possible as far as functionality goes, to minimize documentation reading and maximize familiarity and productivity.
 See the [Wiki](https://github.com/Perustaja/Polyglot/wiki) for documentation.
 
